@@ -39,6 +39,12 @@ class App extends Component<{}, State> {
     this.Kutyabetoltes();
   }
 
+  async DeleteKutya(id: number){
+    await fetch('http://localhost:3000/api/kutya/'+ id, {
+      method: 'DELETE',
+    })
+    await this.Kutyabetoltes();
+  }
 
   Felvetelkezeles = async () => {
     const { ujNev, ujKor} = this.state;
@@ -74,13 +80,14 @@ class App extends Component<{}, State> {
 
     return <div>
       <h2>Új Kutya hozzáadása</h2>
+      <div className="adatok">
       Név: <input type='text' value={ujNev} onChange={e => this.setState({ujNev: e.currentTarget.value})}></input><br/>
-      Kor: <input type='number' value={ujKor} onChange={e => this.setState({ ujKor: parseInt(e.currentTarget.value)})}></input><br/>
+      Kor: <input type='number' value={ujKor} onChange={e => this.setState({ ujKor: parseInt(e.currentTarget.value)})}></input><br/></div>
       <button onClick={this.Felvetelkezeles}>Felvétel</button>
       <h2>Kutyák</h2>
       <ul>
         {
-          this.state.kutyak.map((kutya) => <li>{kutya.nev} | {kutya.kor} </li>)
+          this.state.kutyak.map((kutya) => <table><tr><td>{kutya.nev} | {kutya.kor} <button onClick= {() => this.DeleteKutya(kutya.id)}>Törlés</button></td></tr></table>)
         }
       </ul>
     </div>
